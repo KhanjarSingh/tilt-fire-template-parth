@@ -20,7 +20,7 @@ export default function App() {
     const [gameOver, setGameOver] = useState(false);
     const [score, setScore] = useState(0);
 
-    // To hide instructions after game starts
+
     const [gameStarted, setGameStarted] = useState(false);
 
     const [subscription, setSubscription] = useState(null);
@@ -49,7 +49,7 @@ export default function App() {
         return () => unsubscribe();
     }, []);
 
-    // Move bullets upward
+
     useEffect(() => {
         const interval = setInterval(() => {
             if (!gameOver) {
@@ -63,7 +63,7 @@ export default function App() {
         return () => clearInterval(interval);
     }, [gameOver]);
 
-    // Spawn falling blocks
+
     useEffect(() => {
         const interval = setInterval(() => {
             if (!gameOver) {
@@ -74,14 +74,14 @@ export default function App() {
                 };
 
                 setBlocks((prev) => [...prev, block]);
-                setGameStarted(true); // hide instruction
+                setGameStarted(true);
             }
         }, 1000);
 
         return () => clearInterval(interval);
     }, [gameOver]);
 
-    // Move blocks downward
+
     useEffect(() => {
         const interval = setInterval(() => {
             if (!gameOver) {
@@ -96,7 +96,7 @@ export default function App() {
         return () => clearInterval(interval);
     }, [gameOver]);
 
-    // Collision detection (bullet hits block)
+
     useEffect(() => {
         let newBlocks = [...blocks];
         let newBullets = [...bullet];
@@ -126,7 +126,7 @@ export default function App() {
         }
     }, [bullet, blocks]);
 
-    // NEW: Game over if ANY block reaches player area
+
     useEffect(() => {
         blocks.forEach((block) => {
             if (block.y <= PLAYER_HEIGHT + 20) {
@@ -138,7 +138,7 @@ export default function App() {
     const handleBullet = () => {
         if (gameOver) return;
 
-        setGameStarted(true); // hide instructions on first tap
+        setGameStarted(true);
 
         const newBullet = {
             id: Date.now(),
@@ -161,21 +161,19 @@ export default function App() {
     return (
         <TouchableWithoutFeedback onPress={handleBullet}>
             <View style={styles.container}>
-                {/* PLAYER */}
+
                 <View style={[styles.player, { left: playerX }]} />
 
-                {/* SCORE (top center) */}
+
                 <Text style={styles.scoreText}>Score: {score}</Text>
 
-                {/* BULLETS */}
+
                 {bullet.map((bull) => (
                     <View
                         style={[styles.bullet, { left: bull.x, bottom: bull.y }]}
                         key={bull.id}
                     />
                 ))}
-
-                {/* BLOCKS */}
                 {blocks.map((block) => (
                     <View
                         style={[styles.fallingBlock, { left: block.x, bottom: block.y }]}
@@ -183,7 +181,7 @@ export default function App() {
                     />
                 ))}
 
-                {/* GAME OVER */}
+
                 {gameOver && (
                     <View style={styles.gameOverBox}>
                         <Text style={styles.gameOverText}>GAME OVER</Text>
@@ -196,7 +194,7 @@ export default function App() {
                     </View>
                 )}
 
-                {/* Instruction (Show only before game starts) */}
+
                 {!gameStarted && !gameOver && (
                     <Text style={styles.instruction}>Tilt your phone to move</Text>
                 )}
@@ -223,7 +221,7 @@ const styles = StyleSheet.create({
         borderColor: "#000",
     },
 
-    // TOP CENTER SCORE
+
     scoreText: {
         position: "absolute",
         top: 20,
